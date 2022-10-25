@@ -49,5 +49,9 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location data is needed while using this app</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We use camera permission to take a picture of the user</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>No usage of microphone though. Lol.</string>
 </dict>
 </plist>
