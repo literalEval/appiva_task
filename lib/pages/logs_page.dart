@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class LogsPage extends StatelessWidget {
   const LogsPage({super.key});
@@ -21,18 +22,37 @@ class LogsPage extends StatelessWidget {
         //   ),
         //   (() => Future.value("boi")),
         // ),
-        future: FirebaseFirestore.instance.collection('/logs').get(),
+        future: FirebaseFirestore.instance
+            .collection('/logs')
+            .orderBy("time", descending: true)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
               itemCount: snapshot.data!.size,
               itemBuilder: ((context, index) {
+                final currentDoc = snapshot.data!.docs.elementAt(index).data();
+
+                // The image can also be retrieved using the timestamp
+
                 return ListTile(
                   leading: Text('$index'),
                   title: Text(
-                    snapshot.data!.docs.elementAt(index).data().toString(),
+                    'Lat: ${currentDoc['lat'].toString()}, '
+                    'Lon: ${currentDoc['lon'].toString()}',
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  subtitle: Text("place"),
+                  subtitle: Text(
+                    // Using 3rd party library for this simple task is overkill,
+                    // but works fast and precisely, so why not
+
+                    DateFormat.yMd().add_jm().format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                            (currentDoc['time'] as Timestamp)
+                                .millisecondsSinceEpoch,
+                          ),
+                        ),
+                  ),
                 );
               }),
             );

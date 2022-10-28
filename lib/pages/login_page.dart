@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
       cameras[1],
       ResolutionPreset.low,
     );
-    
+
     _camController.initialize().then((_) {
       if (!mounted) {
         return;
@@ -99,8 +99,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       )
           .then(
         (creds) async {
